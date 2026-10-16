@@ -1,0 +1,12 @@
+{
+  "name": "angelovaz-portfolio",
+  "version": "1.0.0",
+  "description": "Angelo Vaz — Product & Visual Designer Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server . -p 3000 -c-1",
+    "start": "npx -y http-server . -p 3000 -c-1"
+  },
+  "author": "Angelo Vaz",
+  "license": "ISC"
+}

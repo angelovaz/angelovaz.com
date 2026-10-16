@@ -1,0 +1,15 @@
+# Local / tooling
+.DS_Store
+.claude/
+node_modules/
+_backup/
+deploy/
+*.zip
+analyze_grid.py
+
+# Assets no longer used by the site
+assets/fonts/
+assets/eames_chair.png
+assets/focus_tracker.png
+assets/kinto.png
+assets/wassily_chair.png

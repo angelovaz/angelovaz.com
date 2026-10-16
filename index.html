@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+
+  <!-- SEO -->
+  <title>Angelo Vaz — Product Designer & Visual Designer</title>
+  <meta name="description" content="Portfolio of Angelo Vaz, a Product Designer & Visual Designer based in Porto, Portugal. Specializing in minimalist design systems, tactile interface mechanics, and high-fidelity mobile experiences.">
+  <meta name="keywords" content="Angelo Vaz, Product Design, Visual Design, Portfolio, Porto, UI Designer, UX, Design System, Branding">
+  <meta name="author" content="Angelo Vaz">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Angelo Vaz — Product Designer & Visual Designer">
+  <meta property="og:description" content="Portfolio of Angelo Vaz. Specializing in minimalist design systems, tactile interface mechanics, and high-fidelity mobile experiences.">
+  <meta property="og:image" content="assets/lumina.png">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css?v=82">
+</head>
+<body>
+
+  <!-- FLOATING INTRO BOX (collapses into a pill on scroll) -->
+  <div id="intro-box" class="intro-box is-hidden">
+    <div id="intro-toggle" class="intro-toggle" role="button" tabindex="0" aria-label="Toggle menu" aria-expanded="true">
+      <div class="intro-name">
+        <h1 class="intro-title">Angelo Vaz</h1>
+      </div>
+      <div class="intro-actions">
+        <button class="intro-top" id="intro-top" type="button" aria-label="Back to top" tabindex="-1">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M7 2L2.5 6.5M7 2L11.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="intro-toggle-icon" aria-hidden="true">
+          <svg width="20" height="9" viewBox="0 0 20 9" fill="none"><path d="M1 1H19M1 8H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div id="intro-content" class="intro-content">
+      <p class="intro-heading">
+        <span>Product designer,</span>
+        <span>powered by AI</span>
+        <span>and endless curiosity.</span>
+      </p>
+      <p class="intro-sub">
+        <span class="availability-dot" aria-hidden="true"></span>
+        Based in Porto · Available for freelance
+      </p>
+
+      <nav class="intro-filters" aria-label="Filter work">
+        <button class="pill active" data-filter="all">Recent</button>
+        <button class="pill" data-filter="app">App</button>
+        <button class="pill" data-filter="web">Web</button>
+        <button class="pill" data-filter="visual">Branding</button>
+        <button class="pill" data-filter="ai-experiments">AI</button>
+      </nav>
+
+      <form class="intro-form" id="intro-form" aria-hidden="true">
+        <div class="intro-form-inner">
+          <div class="intro-form-head">
+            <span>Let's talk</span>
+            <button class="intro-form-close" id="intro-form-close" type="button" aria-label="Close contact form" tabindex="-1">
+              <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <input class="intro-input" type="text" name="name" placeholder="Your name" aria-label="Name" autocomplete="name" required tabindex="-1">
+          <input class="intro-input" type="email" name="email" placeholder="Email address" aria-label="Email" autocomplete="email" required tabindex="-1">
+          <textarea class="intro-input intro-textarea" name="message" rows="3" placeholder="Tell me about your project…" aria-label="Message" required tabindex="-1"></textarea>
+        </div>
+      </form>
+
+      <button class="intro-cta" id="intro-cta" type="button" aria-expanded="false" aria-controls="intro-form">
+        <span class="btn-text">Get in touch</span>
+        <svg class="check-icon" width="19" height="13" viewBox="0 0 19 13" fill="none"><path class="check-path" d="M17.5 1L6.5 12L1.5 7" stroke="#17FF2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="intro-links">
+        <a href="#" data-open="about">About</a>
+        <a href="https://www.behance.net/angelovaz" target="_blank" rel="noopener noreferrer">Behance</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span class="intro-copy">© 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MASONRY GRID -->
+  <main>
+    <section class="grid" id="grid" aria-label="Portfolio gallery">
+      <div class="grid-item placeholder-item" aria-hidden="true"></div>
+
+      <article class="grid-item" data-id="lemonday-app" data-cta="Try Lemonday" data-url="https://lemonday.app/" data-category="work app ai-experiments" data-title="Lemonday" data-meta="Product Design & AI Curation">
+        <video class="grid-media" src="assets/lemonday.webm#t=0.1" muted loop playsinline preload="metadata"></video>
+      </article>
+
+      <div class="grid-item info-card bio-card" data-category="info" data-pin-under-intro>
+        <div class="info-row">
+          <span class="info-label">Experience</span>
+          <span class="info-label">2008 — today</span>
+        </div>
+        <p class="info-clock">18+ years</p>
+        <p class="info-text bio-text">Designing apps, websites and brand identities for sportsbooks, early-stage startups and established brands. Lately exploring how AI can make design faster and smarter.</p>
+        <a class="bio-link" href="#" data-open="about">More about me <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="grid-item info-card location-card" data-category="info">
+        <div class="info-row">
+          <span class="info-label">Located in</span>
+          <span class="info-label" data-local-zone>GMT+1</span>
+        </div>
+        <p class="info-title">Porto, Portugal</p>
+        <p class="info-clock" data-local-time>--:--</p>
+        <span class="location-pin" aria-hidden="true"></span>
+      </div>
+
+      <article class="grid-item" data-id="promoradar" data-category="work web" data-title="Promoradar" data-meta="Web Design & Sportsbook Bonuses">
+        <video class="grid-media" src="assets/promoradar.mp4" poster="assets/promoradar_poster.jpg" muted loop playsinline preload="metadata" data-autoplay></video>
+      </article>
+
+      <article class="grid-item" data-id="betty-app" data-category="work app" data-title="Betty" data-meta="Product Design & Live Tracking">
+        <img class="grid-media" src="assets/betty_app_icon.png" alt="Betty sports app icon">
+      </article>
+
+      <article class="grid-item" data-id="sportiz-app" data-category="work app" data-title="Sportiz" data-meta="App Design & Sports Quiz">
+        <video class="grid-media" src="assets/sportiz.mp4" poster="assets/sportiz_poster.jpg" muted loop playsinline preload="metadata" data-autoplay></video>
+      </article>
+
+      <article class="grid-item" data-id="snapchat-redesign" data-category="work app" data-title="Snapchat Redesign" data-meta="Product Design & Mobile UI">
+        <img class="grid-media" src="assets/Snapchat_Thumb03.jpg" alt="Snapchat Redesign mobile app UI concept">
+      </article>
+
+      <article class="grid-item" data-id="pickswise" data-category="work web" data-title="Pickswise" data-meta="Web Design & Sports Picks">
+        <video class="grid-media" src="assets/pickswise.mp4" poster="assets/pickswise_poster.jpg" muted loop playsinline preload="metadata" data-autoplay></video>
+      </article>
+
+      <article class="grid-item" data-id="maze-branding" data-category="work visual web" data-title="Maze Legal" data-meta="Branding & Protocol Systems">
+        <img class="grid-media" src="assets/maze_web_hero.png" alt="Maze Legal web landing page hero">
+      </article>
+
+      <article class="grid-item" data-id="cave-wine" data-category="work visual" data-title="CAVE" data-meta="Branding & Visual Identity">
+        <video class="grid-media" src="assets/CAVE_movie.mp4#t=0.1" muted loop playsinline preload="metadata"></video>
+      </article>
+
+      <article class="grid-item" data-id="social-proof-notifications" data-category="work web" data-title="Social Proof Notifications" data-meta="Micro-Interactions">
+        <video class="grid-media" src="assets/XD_DCC_Day 3 - Social Proof_v1.mp4#t=0.1" muted loop playsinline preload="metadata"></video>
+      </article>
+
+      <article class="grid-item" data-id="polycord-app" data-cta="Try Polycord" data-url="https://polycord.io" data-category="work web" data-title="Polycord.io" data-meta="Product Design & Web3">
+        <img class="grid-media" src="assets/polycord_web.jpg" alt="Polycord.io landing page">
+      </article>
+
+      <article class="grid-item" data-id="dreampills-brand" data-cta="Visit Dream Pills" data-url="https://dreampills.pt" data-category="work visual" data-title="Dream Pills" data-meta="Branding & Packaging">
+        <img class="grid-media" src="assets/dreampills_bottle.png" alt="Dream Pills candy bottle packaging">
+      </article>
+
+      <article class="grid-item" data-id="crypto-wallet-dashboard" data-category="work app" data-title="Crypto Wallet" data-meta="Product Design & Fintech">
+        <img class="grid-media" src="assets/crypto_wallet_screens.jpg" alt="Crypto wallet dashboard interface">
+      </article>
+
+      <article class="grid-item" data-id="gravity-branding" data-cta="Visit Gravity" data-url="https://gravityflyfitness.pt/" data-category="work visual" data-title="Gravity Fly Fitness" data-meta="Branding & Identity System">
+        <img class="grid-media" src="assets/gravity_branding_card.png" alt="Gravity Fly Fitness monogram logo">
+      </article>
+
+      <div class="grid-item info-card todo-card" data-category="info">
+        <div class="info-row">
+          <span class="info-label">To-Do</span>
+          <span class="info-label" data-todo-count>2/5</span>
+        </div>
+        <ul class="todo-list">
+          <li><label><input type="checkbox" checked><span>Make AI do the boring stuff</span></label></li>
+          <li><label><input type="checkbox" checked><span>Learn every Figma shortcut</span></label></li>
+          <li><label><input type="checkbox"><span>Design for Red Bull</span></label></li>
+          <li><label><input type="checkbox"><span>Design an app people actually love</span></label></li>
+          <li><label><input type="checkbox"><span>Inbox zero (lol)</span></label></li>
+        </ul>
+      </div>
+
+      <article class="grid-item" data-id="habit-tracker" data-category="work app" data-title="Habit Tracker" data-meta="Product Design & Mobile">
+        <img class="grid-media" src="assets/habit_tracker.png" alt="Habit tracker app interface">
+      </article>
+
+      <article class="grid-item" data-id="fintrust-audit" data-category="work visual web" data-title="FinTrust Audit" data-meta="Branding & Editorial Web">
+        <img class="grid-media" src="assets/fintrust_audit.png" alt="FinTrust Audit visual identity and web design">
+      </article>
+
+      <article class="grid-item" data-id="dashboard-task" data-category="work web" data-title="Dashboard Task Manager" data-meta="Product Design & SaaS">
+        <img class="grid-media" src="assets/dashboard_task_manager.png" alt="Dashboard task manager SaaS mockup">
+      </article>
+
+      <article class="grid-item" data-id="smartwatch-tracker" data-category="work app" data-title="Smartwatch Tracker" data-meta="Product Design & Wearables">
+        <img class="grid-media" src="assets/wearable_watch.png" alt="Smartwatch time tracker widgets">
+      </article>
+
+    </section>
+  </main>
+
+  <!-- SIDE PANEL (case studies + about) -->
+  <div class="panel-backdrop" id="panel-backdrop"></div>
+  <aside class="panel" id="panel" aria-label="Details" aria-hidden="true">
+    <button class="panel-close" id="panel-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="panel-scroller" id="panel-scroller"></div>
+  </aside>
+
+  <!-- About template (rendered into the panel) -->
+  <template id="about-template">
+    <div class="panel-header">
+      <img class="about-avatar" src="assets/avatar_illustration.png" alt="Angelo Vaz illustrated avatar">
+      <h2 class="panel-title">Digital Designer based in Porto, Portugal.</h2>
+      <p class="panel-subtitle">Based in the vibrant city of Porto, I'm a Digital Designer who has been obsessed with design for as long as I can remember, and doing it professionally for over 18 years. That passion only gets stronger with every project. Right now, I'm collaborating with an amazing team at Clever Advertising Group, creating work that resonates.</p>
+    </div>
+
+    <div class="panel-section">
+      <h3 class="panel-section-title">Start a conversation</h3>
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <input class="input" type="text" name="name" required placeholder="Your name" aria-label="Name">
+          <input class="input" type="email" name="email" required placeholder="Email address" aria-label="Email">
+        </div>
+        <input class="input" type="text" name="subject" required placeholder="What are we building together?" aria-label="Subject">
+        <textarea class="input textarea" name="message" required placeholder="Describe your product, deadlines, or timeline…" aria-label="Message"></textarea>
+        <button class="intro-cta" type="submit">
+          <span class="btn-text">Send message</span>
+          <svg class="check-icon" width="19" height="13" viewBox="0 0 19 13" fill="none"><path class="check-path" d="M17.5 1L6.5 12L1.5 7" stroke="#17FF2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="panel-section panel-links">
+      <a href="https://www.behance.net/angelovaz" target="_blank" rel="noopener noreferrer">Behance ↗</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+    </div>
+  </template>
+
+  <script src="index.js?v=81"></script>
+</body>
+</html>
