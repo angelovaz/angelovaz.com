@@ -89,7 +89,25 @@ a { color: inherit; text-decoration: none; }
 
 .intro-box.collapsed .intro-toggle { padding-left: 28px; padding-right: 22px; }
 
-.intro-name { display: flex; align-items: center; min-width: 0; }
+.intro-name { position: relative; display: flex; align-items: center; min-width: 0; }
+
+/* Monogram swaps in for the name once the box collapses into a pill */
+.intro-mark {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 26px;
+  width: auto;
+  opacity: 0;
+  transform: translateY(-50%) scale(0.7) rotate(-8deg);
+  transform-origin: left center;
+  transition: opacity 0.3s var(--ease), transform 0.45s var(--ease-out);
+  pointer-events: none;
+}
+.intro-box.collapsed .intro-mark { opacity: 1; transform: translateY(-50%) scale(1) rotate(0deg); transition-delay: 0.08s; }
+
+.intro-title { transition: opacity 0.25s var(--ease), transform 0.35s var(--ease-out), filter 0.3s var(--ease); }
+.intro-box.collapsed .intro-title { opacity: 0; transform: translateY(8px); filter: blur(4px); }
 
 
 .intro-actions { display: flex; align-items: center; gap: 8px; }
