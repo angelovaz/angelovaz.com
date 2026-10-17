@@ -766,10 +766,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
   let lastFocus = null;
 
-  const showPanel = (html) => {
+  const showPanel = (html, origin) => {
     lastFocus = document.activeElement;
     panelScroller.innerHTML = html;
     panelScroller.scrollTop = 0;
+
+    // Grow the modal out of the clicked card; without an origin it just rises in.
+    if (origin && !panel.classList.contains("active")) {
+      const r = origin.getBoundingClientRect();
+      panel.style.setProperty("--from-x", `${r.left + r.width / 2 - window.innerWidth / 2}px`);
+      panel.style.setProperty("--from-y", `${r.top + r.height / 2 - window.innerHeight / 2}px`);
+      panel.style.setProperty("--from-s", "0.35");
+    } else if (!panel.classList.contains("active")) {
+      ["--from-x", "--from-y", "--from-s"].forEach((v) => panel.style.removeProperty(v));
+    }
 
     // Restart the staggered entrance even if the panel was already open.
     panel.classList.remove("shown");
@@ -848,7 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p class="panel-text">${escapeHtml(data.solution)}</p>
       </section>
       ${visual}
-    `);
+    `, card);
   };
 
   const openAbout = () => {
