@@ -5,6 +5,72 @@
 
 // CASE STUDY DATABASE
 const CASE_STUDIES = {
+  "squad-fitness": {
+    title: "Squad Fitness Boutique",
+    subtitle: "Brand identity and visual direction for a boutique gym in Porto, built to look as tough as the training.",
+    client: "Squad Fitness Boutique / Porto",
+    role: "Brand Designer & Visual Director",
+    year: "2024",
+    deliverables: "Logo & Stencil Wordmark, Window Graphics, Lightbox Signage, Apparel, Photo Direction",
+    url: "https://squadporto.com/pt/",
+    images: [
+      "assets/squad_lightbox_sign.jpg",
+      "assets/squad_make_reps.jpg",
+      "assets/squad_test_your_limits.jpg",
+      "assets/squad_tshirt.jpg"
+    ],
+    portrait: true,
+    embedType: "carousel",
+    problem: "Squad wanted to stand apart from glossy chain gyms: a small, community-driven boutique where the brand feels raw, honest and a little military in its discipline.",
+    solution: "A stencil wordmark locked inside a bold rectangular frame, inspired by equipment crates and field markings, rolled out across window vinyls (\"Test Your Limits\", \"Make Reps Not Selfies\"), a backlit lightbox sign and training apparel. Moody, desaturated photography with copper accents keeps every touchpoint in the same gritty register.",
+    colors: [
+      { hex: "#0E0E0E", name: "Iron Black" },
+      { hex: "#F2F2F2", name: "Chalk White" },
+      { hex: "#B5704A", name: "Copper" },
+      { hex: "#5A5A5A", name: "Concrete Grey" }
+    ],
+    typographies: ["Stencil Display Sans", "Condensed Grotesk Caps", "Hand-drawn Accent Caps"]
+  },
+  "toscano-ristorante": {
+    title: "Toscano Ristorante",
+    subtitle: "Editorial poster and social visuals for an Italian restaurant, cooking since 1992.",
+    client: "Toscano Ristorante",
+    role: "Visual & Brand Designer",
+    year: "2026",
+    deliverables: "Poster Design, Social Media Visuals, Stacked Wordmark Lockup, Art Direction",
+    images: [
+      "assets/toscano_poster.jpg"
+    ],
+    embedType: "carousel",
+    problem: "Restaurant marketing often defaults to bright, busy food photography. Toscano needed visuals that felt as considered as its kitchen: warm, classic and a little cinematic.",
+    solution: "A dark, film-grain composition that lets a single forkful of spaghetti carry the whole frame, paired with an elegant high-contrast serif \"Buon Appetito!\" and a stacked TOS / CA / NO wordmark with a discreet \"Since 1992\" seal. A faint green arc nods to the Italian flag without spelling it out.",
+    colors: [
+      { hex: "#1C1C1C", name: "Charcoal Grain" },
+      { hex: "#F2EEE8", name: "Cream Serif" },
+      { hex: "#1F4A2A", name: "Basil Green" },
+      { hex: "#C8642D", name: "Pomodoro" }
+    ],
+    typographies: ["High-Contrast Display Serif", "Stacked Wordmark"]
+  },
+  "dirty-tattoos": {
+    title: "Dirty Tattoos",
+    subtitle: "A hand-lettered identity for a tattoo studio, with a brush script that feels drawn by the same hand that holds the needle.",
+    client: "Dirty Tattoos / Tattoo Studio",
+    role: "Brand & Lettering Designer",
+    year: "2021",
+    deliverables: "Logotype, Custom Script Lettering, Badge Lockup, Brand Applications",
+    images: [
+      "assets/dirty_tattoos_logo.jpg"
+    ],
+    embedType: "carousel",
+    problem: "Tattoo studios live or die by their craft, and generic fonts make a studio look like every other shop on the street. The brand needed to feel handmade, confident and a little rebellious.",
+    solution: "A custom brush-script wordmark with a sweeping underline swash that ties \"Dirty Tattoos\" into one gesture, framed by a condensed, slightly irregular \"Since 2021 / Tattoo Studio\" lockup that echoes old-school flash lettering.",
+    colors: [
+      { hex: "#1A1A1A", name: "Ink Black" },
+      { hex: "#FFFFFF", name: "Skin White" }
+    ],
+    typographies: ["Custom Brush Script", "Condensed Display Caps"]
+  },
   "sportiz-app": {
     title: "Sportiz",
     subtitle: "The ultimate sports quiz challenge: answer trivia, unlock collectible achievements, keep your streak alive and climb the leaderboard.",
@@ -34,13 +100,17 @@ const CASE_STUDIES = {
   },
   "pickswise": {
     title: "Pickswise",
-    subtitle: "Expert sports picks, predictions and betting offers for US bettors, updated every day.",
+    subtitle: "Expert sports picks, predictions and betting offers for US bettors, across the mobile app and the website.",
     client: "Pickswise / Spotlight Sports Group",
     role: "Product & Web Designer",
     year: "2026",
-    deliverables: "Homepage, Expert Pick Cards, Odds Comparison Rows, Exclusive Offers & Promo Codes",
+    deliverables: "Mobile App UI, Homepage, Expert Pick Cards, Odds Comparison Rows, Exclusive Offers & Promo Codes",
     url: "https://www.pickswise.com/",
+    images: [
+      "assets/pickswise_app.jpg"
+    ],
     video: "assets/pickswise.mp4",
+    imagesFirst: true,
     embedType: "carousel",
     problem: "Bettors want a quick, trustworthy answer to \"who should I back today?\", but picks, odds and sportsbook offers usually live on separate pages and compete for attention with ads.",
     solution: "A homepage built around expert pick cards: each one shows the analyst, matchup, pick type and a short rationale, with live odds from multiple sportsbooks right underneath. A sidebar groups today's picks by sport and surfaces exclusive offers and promo codes.",
@@ -629,7 +699,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   cards.forEach((card) => {
-    // Info cards (location, current job, to-do) have no media and don't open a panel.
+    // Info cards (experience, to-do) have no media and don't open a panel.
     if (card.classList.contains("info-card")) {
       card._loaded = true;
       revealObserver.observe(card);
@@ -638,6 +708,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const title = card.dataset.title || "";
     const meta = card.dataset.meta || "";
+    const frameEl = card.querySelector(".grid-media");
 
     const overlay = document.createElement("div");
     overlay.className = "overlay";
@@ -654,7 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Media + overlay live in their own frame so an optional footer can sit below.
     const frame = document.createElement("div");
     frame.className = "card-media";
-    frame.append(card.querySelector(".grid-media"), overlay);
+    frame.append(frameEl, overlay);
     card.prepend(frame);
 
     if (card.dataset.cta && card.dataset.url) {
@@ -673,7 +744,8 @@ document.addEventListener("DOMContentLoaded", () => {
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", `${title} — ${meta}`);
 
-    const media = card.querySelector(".grid-media");
+    // A .grid-media wrapper (e.g. the phone stage) waits on the image inside it.
+    const media = frameEl.matches("img, video") ? frameEl : frameEl.querySelector("img, video");
     const markLoaded = () => {
       if (card._loaded) return;
       card._loaded = true;
@@ -816,11 +888,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const isBook = cats.includes("reading");
     const L = isBook ? LABELS.reading : cats.includes("ai-experiments") ? LABELS["ai-experiments"] : LABELS.default;
 
-    const media = [];
-    if (data.video) media.push(`<video src="${data.video}" autoplay loop muted playsinline></video>`);
-    (data.images || (data.image ? [data.image] : [])).forEach((src) => {
-      media.push(`<img src="${src}" alt="${escapeHtml(data.title)}" loading="lazy">`);
-    });
+    const media = (data.images || (data.image ? [data.image] : [])).map(
+      (src) => `<img src="${src}" alt="${escapeHtml(data.title)}" loading="lazy">`
+    );
+    if (data.video) {
+      const video = `<video src="${data.video}" autoplay loop muted playsinline></video>`;
+      data.imagesFirst ? media.push(video) : media.unshift(video);
+    }
 
     const url = data.url
       ? `<dt>Website</dt><dd><a href="${data.url}" target="_blank" rel="noopener noreferrer">${data.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗</a></dd>`
@@ -848,7 +922,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <dt>${L.deliverables}</dt><dd>${escapeHtml(data.deliverables)}</dd>
         ${url}
       </dl>
-      ${media.length ? `<div class="panel-media${media.length > 1 ? " multi" : ""}${data.phoneScreens ? " phones" : ""}">${media.join("")}</div>` : ""}
+      ${media.length ? `<div class="panel-media${media.length > 1 ? " multi" : ""}${data.phoneScreens || data.portrait ? " phones" : ""}">${media.join("")}</div>` : ""}
       <section class="panel-section">
         <h3 class="panel-section-title">${L.problem}</h3>
         <p class="panel-text">${escapeHtml(data.problem)}</p>
@@ -905,23 +979,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==========================================
-  // 7. INFO CARDS (live Porto clock, playful to-do)
+  // 7. INFO CARDS (playful to-do)
   // ==========================================
-  const clockEl = document.querySelector("[data-local-time]");
-  const zoneEl = document.querySelector("[data-local-zone]");
-  if (clockEl) {
-    const timeFmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Lisbon", hour: "2-digit", minute: "2-digit" });
-    const zoneFmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Lisbon", timeZoneName: "short" });
-    const tickClock = () => {
-      const now = new Date();
-      clockEl.textContent = timeFmt.format(now);
-      const zone = zoneFmt.formatToParts(now).find((p) => p.type === "timeZoneName");
-      if (zoneEl && zone) zoneEl.textContent = zone.value === "WET" ? "GMT+0" : zone.value === "WEST" ? "GMT+1" : zone.value;
-    };
-    tickClock();
-    setInterval(tickClock, 15000);
-  }
-
   const todo = document.querySelector(".todo-card");
   if (todo) {
     const boxes = [...todo.querySelectorAll("input[type='checkbox']")];
