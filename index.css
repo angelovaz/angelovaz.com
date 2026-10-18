@@ -410,6 +410,107 @@ a { color: inherit; text-decoration: none; }
   .grid-item:hover .phone-stage img { transform: translate(-50%, -4.4%) scale(0.647); }
 }
 
+/* Screen carousel: phones in a row, auto-advances on hover (--i = active slide) */
+.screen-carousel {
+  --i: 0;
+  --slide-w: 64%;
+  --gap: 6%;
+  --bar-h: 72px;
+  position: relative;
+  aspect-ratio: 0.56;
+  overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 0%, #2c2c2e 0%, #1c1c1e 70%);
+}
+/* Track spans the area above the bar; % in translate are of the track width (= card width),
+   so the active screen is always centred: offset (100% - slide) / 2, step = slide + gap. */
+.sc-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: var(--bar-h);
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  transform: translateX(calc((100% - var(--slide-w)) / 2 - var(--i) * (var(--slide-w) + var(--gap)) + var(--drag, 0px)));
+  transition: transform 0.75s var(--ease-drawer);
+  will-change: transform;
+}
+/* Drag / swipe: the track follows the pointer, then snaps */
+.screen-carousel { cursor: grab; touch-action: pan-y; }
+.screen-carousel.is-dragging { cursor: grabbing; }
+.screen-carousel.is-dragging .sc-track,
+.screen-carousel.is-dragging .sc-slide { transition: none; }
+.sc-slide {
+  flex: 0 0 var(--slide-w);
+  width: var(--slide-w);
+  height: auto;
+  max-width: none;
+  opacity: 0.45;
+  transform: scale(0.94);
+  transition: opacity 0.6s var(--ease), transform 0.75s var(--ease-drawer);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.sc-slide.is-active { opacity: 1; transform: none; }
+
+.sc-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: var(--bar-h);
+  padding: 0 16px 0 22px;
+}
+.sc-title { color: #fff; font-size: 18px; font-weight: 500; letter-spacing: -0.02em; }
+.sc-controls { display: flex; align-items: center; gap: 8px; }
+.sc-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.sc-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  transition: width 0.45s var(--ease-out), background-color 0.3s var(--ease);
+}
+.sc-dot:hover { background: rgba(255, 255, 255, 0.75); }
+.sc-dot[aria-selected="true"] { width: 28px; background: #fff; }
+.sc-play {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: background-color 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.sc-play:hover { background: rgba(255, 255, 255, 0.2); }
+.sc-play:active { transform: scale(0.92); }
+.sc-play .i-pause, .screen-carousel.is-playing .sc-play .i-play { display: none; }
+.screen-carousel.is-playing .sc-play .i-pause { display: block; }
+
+/* The carousel brings its own title/controls, so keep only the corner arrow of the hover overlay */
+.has-carousel .overlay .name-group, .has-carousel .overlay .bottom-text { display: none; }
+.has-carousel .overlay .top-row { justify-content: flex-end; }
+
 /* Card footer with CTA (live products) */
 .card-footer {
   display: flex;

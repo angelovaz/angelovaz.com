@@ -390,6 +390,30 @@ const CASE_STUDIES = {
     ],
     typographies: ["Custom Geometric Sans", "SF Pro Text", "System Mono"]
   },
+  "betty-redesign": {
+    title: "Betty Redesign",
+    subtitle: "A redesign of the Betty app: shout goaaaaaal before everyone else, with live scores, smart forecasts and odds side by side.",
+    client: "Betty Sports",
+    role: "Product Designer",
+    year: "2026",
+    deliverables: "App Redesign, Home & Fixtures, Match Dashboard, Odds Comparison, Light & Dark Mode",
+    images: [
+      "assets/betty_screen_home_dark.webp",
+      "assets/betty_screen_match.webp",
+      "assets/betty_screen_home_light.webp"
+    ],
+    phoneScreens: true,
+    embedType: "carousel",
+    problem: "The original Betty app crammed fixtures, odds and promos into dense lists. Fans had to dig to see what mattered right now: which games are on today, how they are going, and where the value is.",
+    solution: "A calmer, bolder layout built around a date strip and a single hero card per day, a match dashboard that turns stats into quick reads (likely outcome, expected goals, a \"Safe\" signal) and a clean 1x2 odds table across bookmakers. Every screen ships in light and dark mode.",
+    colors: [
+      { hex: "#0A1AFF", name: "Betty Blue" },
+      { hex: "#12131C", name: "Night Pitch" },
+      { hex: "#E3E3FB", name: "Lavender Card" },
+      { hex: "#2BD45B", name: "Safe Green" }
+    ],
+    typographies: ["Inter Display Bold", "Inter Regular"]
+  },
   "betty-app": {
     title: "Betty",
     subtitle: "Shout goaaaaaal before everyone else with ultra-fast real-time sports tracking.",
@@ -545,7 +569,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const items = [placeholder, ...pinned, ...shown.filter((c) => !pinned.includes(c))];
 
     items.forEach((item) => {
-      const col = item === placeholder || pinned.includes(item) ? 0 : heights.indexOf(Math.min(...heights));
+      // data-stack-under="<id>" keeps a card directly beneath another one, in its column.
+      const anchor = item.dataset.stackUnder && items.find((i) => i.dataset.id === item.dataset.stackUnder);
+      const col = item === placeholder || pinned.includes(item)
+        ? 0
+        : anchor && anchor._col !== undefined
+          ? anchor._col
+          : heights.indexOf(Math.min(...heights));
       item._col = col;
       item.style.left = `${pad + col * (colWidth + gutter)}px`;
       item.style.top = `${pad + heights[col]}px`;
@@ -790,6 +820,134 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     revealObserver.observe(card);
+  });
+
+  // ==========================================
+  // 3b. SCREEN CAROUSELS (auto-advance on hover, dots + play)
+  // ==========================================
+  const CAROUSEL_STEP_MS = 1800;
+
+  document.querySelectorAll("[data-carousel]").forEach((root) => {
+    const slides = [...root.querySelectorAll(".sc-slide")];
+    const dotsWrap = root.querySelector(".sc-dots");
+    const playBtn = root.querySelector(".sc-play");
+    const card = root.closest(".grid-item");
+    let index = 0;
+    let timer = null;
+    let pinned = false; // started from the play button: keeps running without hover
+
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "sc-dot";
+      dot.setAttribute("role", "tab");
+      dot.setAttribute("aria-label", `Screen ${i + 1}`);
+      dot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        go(i);
+        if (timer) restart();
+      });
+      dotsWrap.appendChild(dot);
+      return dot;
+    });
+
+    const go = (i) => {
+      index = (i + slides.length) % slides.length;
+      root.style.setProperty("--i", index);
+      slides.forEach((s, k) => s.classList.toggle("is-active", k === index));
+      dots.forEach((d, k) => d.setAttribute("aria-selected", String(k === index)));
+    };
+
+    const start = (delay = CAROUSEL_STEP_MS) => {
+      if (timer) return;
+      root.classList.add("is-playing");
+      playBtn.setAttribute("aria-label", "Pause slideshow");
+      const tick = () => {
+        go(index + 1);
+        timer = setTimeout(tick, CAROUSEL_STEP_MS);
+      };
+      timer = setTimeout(tick, delay);
+    };
+    const stop = () => {
+      clearTimeout(timer);
+      timer = null;
+      root.classList.remove("is-playing");
+      playBtn.setAttribute("aria-label", "Play slideshow");
+    };
+    const restart = () => { stop(); start(); };
+
+    playBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (timer) { pinned = false; stop(); }
+      else { pinned = true; go(index + 1); start(); }
+    });
+    // Keyboard on the controls shouldn't trigger the card's "open project" shortcut.
+    root.querySelector(".sc-controls").addEventListener("keydown", (e) => e.stopPropagation());
+
+    if (canHover) {
+      card.addEventListener("mouseenter", () => { if (!reduceMotion) start(700); });
+      card.addEventListener("mouseleave", () => { if (!pinned) stop(); });
+    } else if (!reduceMotion) {
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) start(1200);
+        else if (!pinned) stop();
+      }, { threshold: 0.5 }).observe(root);
+    }
+
+    // Drag / swipe between screens (horizontal only, so vertical page scroll still works).
+    let drag = null;
+    let suppressClick = false;
+    const stepPx = () => slides[1].offsetLeft - slides[0].offsetLeft; // slide width + gap, as laid out
+
+    root.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0 || e.target.closest(".sc-controls")) return;
+      drag = { x: e.clientX, y: e.clientY, dx: 0, active: false, id: e.pointerId };
+    });
+
+    root.addEventListener("pointermove", (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      if (!drag.active) {
+        if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy)) return;
+        drag.active = true;
+        try { root.setPointerCapture(e.pointerId); } catch { /* pointer already released */ }
+        root.classList.add("is-dragging");
+        stop();
+      }
+      // Rubber-band past the first/last screen.
+      const atEdge = (index === 0 && dx > 0) || (index === slides.length - 1 && dx < 0);
+      drag.dx = atEdge ? dx * 0.35 : dx;
+      root.style.setProperty("--drag", `${drag.dx}px`);
+    });
+
+    const endDrag = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const { active, dx } = drag;
+      drag = null;
+      if (!active) return;
+      suppressClick = true;
+      setTimeout(() => (suppressClick = false), 80); // the click (if any) fires right after pointerup
+      root.classList.remove("is-dragging");
+      root.style.setProperty("--drag", "0px");
+      let delta = -Math.round(dx / stepPx());
+      if (delta === 0 && Math.abs(dx) > stepPx() * 0.15) delta = dx < 0 ? 1 : -1;
+      go(Math.min(slides.length - 1, Math.max(0, index + delta)));
+      if (pinned || (canHover && card.matches(":hover"))) start();
+    };
+    root.addEventListener("pointerup", endDrag);
+    root.addEventListener("pointercancel", endDrag);
+
+    // A drag must not count as a click that opens the project.
+    root.addEventListener("click", (e) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      e.stopPropagation();
+      e.preventDefault();
+    }, true);
+    slides.forEach((img) => img.setAttribute("draggable", "false"));
+
+    go(0);
   });
 
   // ==========================================

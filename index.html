@@ -26,7 +26,7 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="index.css?v=94">
+  <link rel="stylesheet" href="index.css?v=99">
 </head>
 <body>
 
@@ -117,7 +117,27 @@
         <video class="grid-media" src="assets/promoradar.mp4" poster="assets/promoradar_poster.jpg" muted loop playsinline preload="metadata" data-autoplay></video>
       </article>
 
-      <article class="grid-item" data-id="betty-app" data-category="work app" data-title="Betty" data-meta="Product Design & Live Tracking">
+      <article class="grid-item has-carousel" data-id="betty-redesign" data-category="work app" data-title="Betty Redesign" data-meta="App Redesign · Live Scores & Odds">
+        <div class="grid-media screen-carousel" data-carousel>
+          <div class="sc-track">
+            <img class="sc-slide" src="assets/betty_screen_home_dark.webp" alt="Betty app home screen in dark mode with today's fixtures">
+            <img class="sc-slide" src="assets/betty_screen_match.webp" alt="Betty match dashboard with likely outcome, expected goals and odds" loading="lazy">
+            <img class="sc-slide" src="assets/betty_screen_home_light.webp" alt="Betty app home screen in light mode with the Daily Kick-Off list" loading="lazy">
+          </div>
+          <div class="sc-bar">
+            <span class="sc-title">Betty</span>
+            <div class="sc-controls">
+              <div class="sc-dots" role="tablist" aria-label="Betty screens"></div>
+              <button class="sc-play" type="button" aria-label="Play slideshow">
+                <svg class="i-play" width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M1 1.8v12.4a1 1 0 0 0 1.5.86l10.4-6.2a1 1 0 0 0 0-1.72L2.5.94A1 1 0 0 0 1 1.8Z"/></svg>
+                <svg class="i-pause" width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><rect x="1.5" y="1" width="4" height="14" rx="1.2"/><rect x="8.5" y="1" width="4" height="14" rx="1.2"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="grid-item" data-id="betty-app" data-category="work app" data-title="Betty" data-meta="Product Design & Live Tracking" data-stack-under="betty-redesign">
         <img class="grid-media" src="assets/betty_app_icon.png" alt="Betty sports app icon">
       </article>
 
@@ -247,6 +267,6 @@
     </div>
   </template>
 
-  <script src="index.js?v=93"></script>
+  <script src="index.js?v=99"></script>
 </body>
 </html>
