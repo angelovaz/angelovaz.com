@@ -1095,7 +1095,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const openAbout = () => {
     showPanel(document.getElementById("about-template").innerHTML);
-    initContactForm(panelScroller.querySelector("#contact-form"));
   };
 
   document.querySelectorAll("[data-open='about']").forEach((el) => {
@@ -1110,31 +1109,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closePanel();
   });
-
-  // ==========================================
-  // 6. CONTACT FORM (simulated send)
-  // ==========================================
-  const initContactForm = (form) => {
-    if (!form) return;
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const btn = form.querySelector("button[type='submit']");
-      const label = btn.querySelector(".btn-text");
-      label.textContent = "Sending…";
-      btn.disabled = true;
-
-      setTimeout(() => {
-        label.textContent = "Sent — I'll reply within 24h";
-        btn.classList.add("is-sent");
-        form.reset();
-        setTimeout(() => {
-          btn.classList.remove("is-sent");
-          label.textContent = "Send message";
-          btn.disabled = false;
-        }, 3500);
-      }, 1000);
-    });
-  };
 
   // ==========================================
   // 7. INFO CARDS (playful to-do)

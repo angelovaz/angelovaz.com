@@ -26,7 +26,7 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="index.css?v=99">
+  <link rel="stylesheet" href="index.css?v=102">
 </head>
 <body>
 
@@ -63,7 +63,7 @@
         <button class="pill" data-filter="app">App</button>
         <button class="pill" data-filter="web">Web</button>
         <button class="pill" data-filter="visual">Branding</button>
-        <button class="pill" data-filter="ai-experiments">AI</button>
+        <button class="pill" data-filter="ai-experiments">Experiment</button>
       </nav>
 
       <form class="intro-form" id="intro-form" aria-hidden="true">
@@ -86,9 +86,7 @@
       </button>
 
       <div class="intro-links">
-        <a href="#" data-open="about">About</a>
-        <a href="https://www.behance.net/angelovaz" target="_blank" rel="noopener noreferrer">Behance</a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="intro-mail" href="mailto:hey@angelovaz.com">hey@angelovaz.com</a>
         <span class="intro-copy">© 2026</span>
       </div>
     </div>
@@ -239,34 +237,75 @@
 
   <!-- About template (rendered into the panel) -->
   <template id="about-template">
-    <div class="panel-header">
-      <img class="about-avatar" src="assets/avatar_illustration.png" alt="Angelo Vaz illustrated avatar">
-      <h2 class="panel-title">Digital Designer based in Porto, Portugal.</h2>
-      <p class="panel-subtitle">Based in the vibrant city of Porto, I'm a Digital Designer who has been obsessed with design for as long as I can remember, and doing it professionally for over 18 years. That passion only gets stronger with every project. Right now, I'm collaborating with an amazing team at Clever Advertising Group, creating work that resonates.</p>
-    </div>
+    <figure class="about-hero">
+      <img src="assets/about_illustration.webp" alt="Illustrated portrait of Angelo Vaz">
+    </figure>
 
-    <div class="panel-section">
-      <h3 class="panel-section-title">Start a conversation</h3>
-      <form class="contact-form" id="contact-form">
-        <div class="form-row">
-          <input class="input" type="text" name="name" required placeholder="Your name" aria-label="Name">
-          <input class="input" type="email" name="email" required placeholder="Email address" aria-label="Email">
-        </div>
-        <input class="input" type="text" name="subject" required placeholder="What are we building together?" aria-label="Subject">
-        <textarea class="input textarea" name="message" required placeholder="Describe your product, deadlines, or timeline…" aria-label="Message"></textarea>
-        <button class="intro-cta" type="submit">
-          <span class="btn-text">Send message</span>
-          <svg class="check-icon" width="19" height="13" viewBox="0 0 19 13" fill="none"><path class="check-path" d="M17.5 1L6.5 12L1.5 7" stroke="#17FF2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </form>
-    </div>
+    <header class="panel-header about-header">
+      <span class="panel-eyebrow">About</span>
+      <h2 class="panel-title">Product designer, powered by AI and endless curiosity.</h2>
+      <p class="about-status"><span class="availability-dot" aria-hidden="true"></span>Based in Porto · Available for freelance</p>
+    </header>
 
-    <div class="panel-section panel-links">
-      <a href="https://www.behance.net/angelovaz" target="_blank" rel="noopener noreferrer">Behance ↗</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-    </div>
+    <section class="panel-section">
+      <p class="panel-text about-bio">I've been designing since 2005: apps, websites and brand identities for sportsbooks, early-stage startups and established brands. I joined Clever Advertising Group in Porto in 2017 as a UI Designer and today I'm Lead Designer there, while keeping a freelance practice running alongside. Lately I'm exploring how AI can make design faster and smarter, from the first prototype to the final pixel.</p>
+    </section>
+
+    <section class="panel-section">
+      <div class="career-head">
+        <h3 class="panel-section-title">Career</h3>
+        <span class="career-since">Since 2005</span>
+      </div>
+      <ol class="career">
+          <li class="career-row is-current">
+            <div class="career-info">
+              <p class="career-role">Lead Designer <span>· Clever Advertising Group</span></p>
+              <p class="career-meta">Dec 2017 — Now · Porto · Started as UI Designer</p>
+            </div>
+          </li>
+          <li class="career-row">
+            <div class="career-info">
+              <p class="career-role">Designer <span>· 3D Everybody</span></p>
+              <p class="career-meta">2014 — 2017 · Product design, coordination & project management</p>
+            </div>
+          </li>
+          <li class="career-row">
+            <div class="career-info">
+              <p class="career-role">Visual Designer <span>· DreamPills</span></p>
+              <p class="career-meta">2012 — 2018 · Freelance · Remote</p>
+            </div>
+          </li>
+          <li class="career-row is-current">
+            <div class="career-info">
+              <p class="career-role">Freelance Designer <span>· Self-employed</span></p>
+              <p class="career-meta">2010 — Now · Porto</p>
+            </div>
+          </li>
+          <li class="career-row">
+            <div class="career-info">
+              <p class="career-role">Graphic Designer <span>· Alphapower Publicidade</span></p>
+              <p class="career-meta">2009 — 2014 · Porto</p>
+            </div>
+          </li>
+          <li class="career-row">
+            <div class="career-info">
+              <p class="career-role">Senior Designer <span>· SEMPRE Imagem Digital</span></p>
+              <p class="career-meta">2005 — 2017 · Porto</p>
+            </div>
+          </li>
+      </ol>
+    </section>
+
+    <section class="panel-section about-contact">
+      <h3 class="panel-section-title">Let's work together</h3>
+      <a class="about-email" href="mailto:hey@angelovaz.com">hey@angelovaz.com <span aria-hidden="true">↗</span></a>
+      <div class="about-links">
+        <a class="about-link" href="https://www.linkedin.com/in/angelovaz/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a class="about-link" href="https://x.com/angelovaz" target="_blank" rel="noopener noreferrer">X ↗</a>
+      </div>
+    </section>
   </template>
 
-  <script src="index.js?v=99"></script>
+  <script src="index.js?v=101"></script>
 </body>
 </html>
