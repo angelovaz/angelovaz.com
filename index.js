@@ -523,6 +523,117 @@ const columnCount = (width) => {
 
 const escapeHtml = (str) => String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// ==========================================
+// UI SOUNDS — tiny synthesized clicks (Web Audio, no audio files)
+// Each sound is a few millisecond-long layers: filtered noise for the "tick",
+// plus short oscillator sweeps for the body. Muting is remembered per visitor.
+// ==========================================
+const SOUND_KEY = "av-sound";
+const SOUNDS = {
+  press: [
+    { noise: true, filter: 2400, q: 1, decay: 0.006, gain: 0.12 },
+    { type: "triangle", from: 540, to: 420, decay: 0.035, gain: 0.6 },
+    { type: "sine", from: 1250, to: 900, fm: [0.5, 30], decay: 0.018, gain: 0.2 },
+  ],
+  select: [
+    { noise: true, filter: 3200, q: 1, decay: 0.004, gain: 0.08 },
+    { type: "sine", from: 880, to: 1060, decay: 0.045, gain: 0.4 },
+  ],
+  open: [{ type: "sine", from: 440, to: 780, attack: 0.002, decay: 0.085, gain: 0.34 }],
+  close: [{ type: "sine", from: 760, to: 380, attack: 0.002, decay: 0.075, gain: 0.34 }],
+  toggleOn: [
+    { type: "sine", from: 540, decay: 0.06, gain: 0.3 },
+    { type: "sine", from: 780, decay: 0.06, gain: 0.3, delay: 0.03 },
+  ],
+  toggleOff: [
+    { type: "sine", from: 640, decay: 0.055, gain: 0.3 },
+    { type: "sine", from: 420, decay: 0.055, gain: 0.3, delay: 0.03 },
+  ],
+  success: [
+    { type: "sine", from: 523, decay: 0.28, gain: 0.14 },
+    { type: "sine", from: 659, decay: 0.26, gain: 0.12, delay: 0.07 },
+    { type: "sine", from: 784, to: 880, decay: 0.3, gain: 0.13, delay: 0.14 },
+  ],
+};
+
+const sfx = (() => {
+  let ctx = null;
+  let master = null;
+  let noiseBuffer = null;
+  let enabled = true;
+  try { enabled = localStorage.getItem(SOUND_KEY) !== "off"; } catch { /* storage blocked */ }
+
+  const ensure = () => {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!ctx) {
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0.35;
+      master.connect(ctx.destination);
+      noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.1), ctx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  };
+
+  const layer = (l, t0) => {
+    const t = t0 + (l.delay || 0);
+    const attack = l.attack || 0.001;
+    const end = t + attack + l.decay;
+    const amp = ctx.createGain();
+    amp.gain.setValueAtTime(0.0001, t);
+    amp.gain.exponentialRampToValueAtTime(l.gain, t + attack);
+    amp.gain.exponentialRampToValueAtTime(0.0001, end);
+    amp.connect(master);
+
+    let src;
+    if (l.noise) {
+      src = ctx.createBufferSource();
+      src.buffer = noiseBuffer;
+      const bp = ctx.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = l.filter;
+      bp.Q.value = l.q || 1;
+      src.connect(bp);
+      bp.connect(amp);
+    } else {
+      src = ctx.createOscillator();
+      src.type = l.type;
+      src.frequency.setValueAtTime(l.from, t);
+      if (l.to) src.frequency.exponentialRampToValueAtTime(l.to, end);
+      if (l.fm) {
+        const mod = ctx.createOscillator();
+        const depth = ctx.createGain();
+        mod.frequency.value = l.from * l.fm[0];
+        depth.gain.value = l.fm[1];
+        mod.connect(depth);
+        depth.connect(src.frequency);
+        mod.start(t);
+        mod.stop(end + 0.02);
+      }
+      src.connect(amp);
+    }
+    src.start(t);
+    src.stop(end + 0.02);
+  };
+
+  return {
+    get enabled() { return enabled; },
+    play(name) {
+      if (!enabled || !SOUNDS[name] || !ensure()) return;
+      const t0 = ctx.currentTime + 0.005;
+      SOUNDS[name].forEach((l) => layer(l, t0));
+    },
+    setEnabled(on) {
+      enabled = on;
+      try { localStorage.setItem(SOUND_KEY, on ? "on" : "off"); } catch { /* storage blocked */ }
+    },
+  };
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("grid");
   const placeholder = grid.querySelector(".placeholder-item");
@@ -1014,6 +1125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Restart the staggered entrance even if the panel was already open.
     panel.classList.remove("shown");
     void panel.offsetWidth;
+    if (!panel.classList.contains("active")) sfx.play("open");
     panel.classList.add("active", "shown");
     panel.setAttribute("aria-hidden", "false");
     panelBackdrop.classList.add("active");
@@ -1023,6 +1135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const closePanel = () => {
     if (!panel.classList.contains("active")) return;
+    sfx.play("close");
     panel.classList.remove("active");
     panel.setAttribute("aria-hidden", "true");
     panelBackdrop.classList.remove("active");
@@ -1120,7 +1233,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateCount = () => {
       countEl.textContent = `${boxes.filter((b) => b.checked).length}/${boxes.length}`;
     };
-    boxes.forEach((b) => b.addEventListener("change", updateCount));
+    boxes.forEach((b) => b.addEventListener("change", () => {
+      sfx.play(b.checked ? "toggleOn" : "toggleOff");
+      updateCount();
+    }));
     updateCount();
   }
 
@@ -1181,6 +1297,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       introCtaLabel.textContent = "Sent, talk soon!";
       introCta.classList.add("is-sent");
+      sfx.play("success");
       setTimeout(() => {
         introForm.reset();
         setContact(false);
@@ -1189,6 +1306,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 2200);
     }, 900);
   });
+
+  // ==========================================
+  // 8c. CLICK SOUNDS + mute toggle
+  // ==========================================
+  // pointerdown (not click) so the tick lands the moment a finger/button goes down.
+  document.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    const el = e.target.closest("a, button, label, [role='button'], .pill");
+    if (!el) return;
+    if (el.closest(".todo-list")) return;                       // checkboxes have their own toggle sound
+    if (el.matches(".grid-item") || el.id === "sound-toggle") return; // cards play "open"; the toggle has its own
+    sfx.play(el.matches(".pill[data-filter]") ? "select" : "press");
+  }, { passive: true });
+
+  const soundBtn = document.getElementById("sound-toggle");
+  const syncSoundBtn = () => {
+    soundBtn.classList.toggle("is-off", !sfx.enabled);
+    soundBtn.setAttribute("aria-pressed", String(sfx.enabled));
+    soundBtn.setAttribute("aria-label", sfx.enabled ? "Turn sounds off" : "Turn sounds on");
+  };
+  soundBtn.addEventListener("click", () => {
+    sfx.setEnabled(!sfx.enabled);
+    if (sfx.enabled) sfx.play("toggleOn");
+    syncSoundBtn();
+  });
+  syncSoundBtn();
 
   // ==========================================
   // 9. INIT

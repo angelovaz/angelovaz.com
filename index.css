@@ -336,6 +336,22 @@ a { color: inherit; text-decoration: none; }
 }
 .intro-links a:hover::after { transform: scaleX(1); transform-origin: left; }
 .intro-copy { margin-left: auto; color: var(--ink-weak); }
+.sound-toggle {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-left: -6px;
+  border-radius: 50%;
+  color: var(--ink-weak);
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.sound-toggle:hover { color: var(--ink); background: #f3f4f6; }
+.sound-toggle:active { transform: scale(0.9); }
+.sound-toggle .snd-wave, .sound-toggle .snd-mute { transition: opacity 0.2s var(--ease); }
+.sound-toggle .snd-mute { opacity: 0; }
+.sound-toggle.is-off .snd-wave { opacity: 0; }
+.sound-toggle.is-off .snd-mute { opacity: 1; }
 .intro-mail { color: var(--ink-weak); transition: color 0.2s var(--ease); }
 .intro-mail:hover { color: var(--ink); }
 
